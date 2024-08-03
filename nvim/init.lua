@@ -195,12 +195,6 @@ require("lazy").setup({
             cargo = {
               allFeatures = true,  -- TODO how to enable when using bazel?
             },
-            check = {
-              overrideCommand = { "bash", "./toolchain/workspace/bazel-rust-analyzer.sh" },
-            },
-            checkOnSave = {
-              command = { "bash", "./toolchain/workspace/bazel-rust-analyzer.sh" },
-            },
             imports = {
               group = {
                 enable = false
