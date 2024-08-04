@@ -18,9 +18,8 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 vim.o.wrap = true
 vim.o.linebreak = true
-
 vim.o.undofile = true
-vim.opt.wildignore = '.hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site'
+vim.o.wildignore = '.hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site'
 
 -- Set mouse and status line
 vim.o.mouse = "a"
@@ -49,9 +48,9 @@ vim.o.ttimeoutlen = 0
 
 -- Adjust maximum width of hover window
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-vim.lsp.handlers.hover, {
-  max_width = 100
-}
+  vim.lsp.handlers.hover, {
+    max_width = 100
+  }
 )
 
 -- Jonhoo content
@@ -290,8 +289,6 @@ require("lazy").setup({
         vim.g.rust_clip_command = 'wl-copy'
       end
     },
-    -- fish
-    "khaveesh/vim-fish-syntax",
     {
       "christoomey/vim-tmux-navigator",
       cmd = {
@@ -308,5 +305,7 @@ require("lazy").setup({
         { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
         { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
       },
-    }
+    },
+    "khaveesh/vim-fish-syntax",
+    "airblade/vim-gitgutter",
   })
