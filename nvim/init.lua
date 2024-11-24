@@ -308,5 +308,14 @@ require("lazy").setup({
     },
     "khaveesh/vim-fish-syntax",
     "airblade/vim-gitgutter",
-    "ctrlpvim/ctrlp.vim",
+    {
+      "ctrlpvim/ctrlp.vim",
+      config = function()
+        vim.g.ctrlp_custom_ignore = {
+          dir  = [[\v[\/]\.?(git|hg|svn|env)$]],
+          file = [[\v\.(exe|so|dll)$]],
+          link = 'some_bad_symbolic_links',
+        }
+      end
+    }
   })
