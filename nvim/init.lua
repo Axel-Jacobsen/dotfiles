@@ -192,7 +192,7 @@ require("lazy").setup({
         settings = {
           ["rust-analyzer"] = {
             cargo = {
-              allFeatures = true,  -- TODO how to enable when using bazel?
+              allFeatures = true,
             },
             imports = {
               group = {
@@ -308,4 +308,5 @@ require("lazy").setup({
     },
     "khaveesh/vim-fish-syntax",
     "airblade/vim-gitgutter",
+    "ctrlpvim/ctrlp.vim",
   })
