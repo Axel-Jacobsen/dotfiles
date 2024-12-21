@@ -48,9 +48,9 @@ vim.o.ttimeoutlen = 0
 
 -- Adjust maximum width of hover window
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-  vim.lsp.handlers.hover, {
-    max_width = 100
-  }
+vim.lsp.handlers.hover, {
+  max_width = 100
+}
 )
 
 -- Jonhoo content
@@ -133,13 +133,13 @@ require("lazy").setup({
       vim.cmd([[colorscheme kanagawa]])
       require("kanagawa").setup({
         colors = {
-            theme = {
-                all = {
-                    ui = {
-                        bg_gutter = "none"
-                    }
-                }
+          theme = {
+            all = {
+              ui = {
+                bg_gutter = "none"
+              }
             }
+          }
         },
         compile = true,
         undercurl = true,
@@ -229,93 +229,103 @@ require("lazy").setup({
           }
         }
       }
-      end
+      lspconfig.julials.setup{
+        filetypes = { "julia" },
+        root_dir = lspconfig.util.root_pattern("Manifest.toml", ".git"),
+        on_attach = function(client, bufnr)
+          local opts = { noremap=true, silent=true }
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        end,
+      }
+    end
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    -- load cmp on InsertEnter
+    event = "InsertEnter",
+    -- these dependencies will only be loaded when cmp loads
+    -- dependencies are always lazy-loaded unless specified otherwise
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
     },
-    {
-      "hrsh7th/nvim-cmp",
-      -- load cmp on InsertEnter
-      event = "InsertEnter",
-      -- these dependencies will only be loaded when cmp loads
-      -- dependencies are always lazy-loaded unless specified otherwise
-      dependencies = {
-        "neovim/nvim-lspconfig",
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-      },
-      config = function()
-        local cmp = require'cmp'
-        cmp.setup({
-          snippet = {
-            -- REQUIRED by nvim-cmp. get rid of it once we can
-            expand = function(args)
-              vim.fn["vsnip#anonymous"](args.body)
-            end,
-          },
-          mapping = cmp.mapping.preset.insert({
-            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            ['<C-Space>'] = cmp.mapping.complete(),
-            ['<C-e>'] = cmp.mapping.abort(),
-            -- Accept currently selected item.
-            -- Set `select` to `false` to only confirm explicitly selected items.
-            ['<CR>'] = cmp.mapping.confirm({ select = true }),
-          }),
-          sources = cmp.config.sources({
-            { name = 'nvim_lsp' },
-          }, {
-            { name = 'path' },
-          }),
-          experimental = {
-            ghost_text = true,
-          },
-        })
+    config = function()
+      local cmp = require'cmp'
+      cmp.setup({
+        snippet = {
+          -- REQUIRED by nvim-cmp. get rid of it once we can
+          expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          -- Accept currently selected item.
+          -- Set `select` to `false` to only confirm explicitly selected items.
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        }),
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+        }, {
+          { name = 'path' },
+        }),
+        experimental = {
+          ghost_text = true,
+        },
+      })
 
-        -- Enable completing paths in :
-        cmp.setup.cmdline(':', {
-          sources = cmp.config.sources({
-            { name = 'path' }
-          })
+      -- Enable completing paths in :
+      cmp.setup.cmdline(':', {
+        sources = cmp.config.sources({
+          { name = 'path' }
         })
-      end
+      })
+    end
+  },
+  {
+    'rust-lang/rust.vim',
+    ft = { "rust" },
+    config = function()
+      vim.g.rustfmt_autosave = 1
+      vim.g.rustfmt_emit_files = 1
+      vim.g.rustfmt_fail_silently = 0
+      vim.g.rust_clip_command = 'wl-copy'
+    end
+  },
+  {
+    "christoomey/vim-tmux-navigator",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
     },
-    {
-      'rust-lang/rust.vim',
-      ft = { "rust" },
-      config = function()
-        vim.g.rustfmt_autosave = 1
-        vim.g.rustfmt_emit_files = 1
-        vim.g.rustfmt_fail_silently = 0
-        vim.g.rust_clip_command = 'wl-copy'
-      end
+    keys = {
+      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+      { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
-    {
-      "christoomey/vim-tmux-navigator",
-      cmd = {
-        "TmuxNavigateLeft",
-        "TmuxNavigateDown",
-        "TmuxNavigateUp",
-        "TmuxNavigateRight",
-        "TmuxNavigatePrevious",
-      },
-      keys = {
-        { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-        { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-        { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-        { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
-        { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
-      },
-    },
-    "khaveesh/vim-fish-syntax",
-    "airblade/vim-gitgutter",
-    {
-      "ctrlpvim/ctrlp.vim",
-      config = function()
-        vim.g.ctrlp_custom_ignore = {
-          dir  = [[\v[\/]\.?(git|hg|svn|env)$]],
-          file = [[\v\.(exe|so|dll)$]],
-          link = 'some_bad_symbolic_links',
-        }
-      end
-    }
-  })
+  },
+  "khaveesh/vim-fish-syntax",
+  "airblade/vim-gitgutter",
+  {
+    "ctrlpvim/ctrlp.vim",
+    config = function()
+      vim.g.ctrlp_custom_ignore = {
+        dir  = [[\v[\/]\.?(git|hg|svn|env)$]],
+        file = [[\v\.(exe|so|dll)$]],
+      }
+      vim.g.ctrlp_user_command = 'fd . %s --hidden --no-ignore --exclude ".git*"'
+      vim.g.ctrlp_match_window = 'max:100'
+    end
+  },
+  "JuliaEditorSupport/julia-vim",
+})
