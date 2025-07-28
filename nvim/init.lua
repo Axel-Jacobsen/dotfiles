@@ -320,10 +320,10 @@ require("lazy").setup({
     "ctrlpvim/ctrlp.vim",
     config = function()
       vim.g.ctrlp_custom_ignore = {
-        dir  = [[\v[\/]\.?(git|hg|svn|env)$]],
+        dir  = [[\v[\/]\.?(git|hg|svn|env|target)$]],
         file = [[\v\.(exe|so|dll)$]],
       }
-      vim.g.ctrlp_user_command = 'fd . %s --hidden --no-ignore --exclude ".git*"'
+      vim.g.ctrlp_user_command = 'fd . %s --hidden --no-ignore --exclude ".git*" --exclude "target"'
       vim.g.ctrlp_match_window = 'max:100'
     end
   },
